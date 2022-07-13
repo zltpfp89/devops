@@ -1,0 +1,36 @@
+<table>
+    <tr>
+      <th>Order Date</th>
+      <th>Food</th>
+      <th>Estimated Time</th>
+      <th>Delivery Status</th>
+    </tr>
+    {% for order in order_list %}
+    <tr>
+      <td>{{ order.order_date }}</td>
+      <td>
+        {% for food in order.orderfood_set.all %}
+            {{ food.food_name }}
+        {% endfor %}
+      </td>
+      <td>
+        {% if order.extimated_time == -1 %}
+            No Entry
+        {% else %}
+            {{ order.estimated_time }}
+        {% endif %}
+      </td>
+      <td>
+        {% if order.deliver_finish == 0 %}
+          <form method="post" action="{% url 'orders' %}">
+            <input type="hidden" name="order_id" value="{{ order.id }}">
+            <input type="submit" value="Delivery Completed">
+          </form>
+        {% else %}
+            Completed
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+</table>
+
